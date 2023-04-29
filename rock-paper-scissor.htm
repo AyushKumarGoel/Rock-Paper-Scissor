@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Rock Paper Scissors</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            background-image: url(https://www.shutterstock.com/shutterstock/photos/1633786861/display_1500/stock-vector-colorful-rock-paper-scissors-hand-game-vector-background-pattern-1633786861.jpg);
+        }
+
+        /* CSS */
+        .button {
+            align-items: center;
+            background-image: linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB);
+            border: 0;
+            border-radius: 8px;
+            box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+            box-sizing: border-box;
+            color: #FFFFFF;
+            display: flex;
+            font-family: Phantomsans, sans-serif;
+            font-size: 20px;
+            justify-content: center;
+            line-height: 1em;
+            max-width: 100%;
+            min-width: 140px;
+            padding: 19px 24px;
+            text-decoration: none;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .button:active,
+        .button:hover {
+            outline: 0;
+        }
+
+        @media (min-width: 768px) {
+            .button {
+                font-size: 24px;
+                min-width: 196px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="color:black;font-style: italic;"><u>Rock, Paper, Scissors</u></h1>
+    <p>Select either rock, paper, or scissors and see if you can beat the computer!</p>
+
+    <p><strong>Remember:</strong> “Rock breaks scissors, scissors cuts paper, paper covers rock.” </p>
+    <div class='score'>
+
+    </div>
+    <div class='message'>
+
+    </div>
+    <button type='button'>Rock</button>
+    <button type='button'>Paper</button>
+    <button type='button'>Scissors</button>
+    <script>
+        const message = document.querySelector('.message');
+        const score = document.querySelector('.score');
+        const buttons = document.querySelectorAll('button');
+        const winnerScores = [0, 0];
+
+        //add event listeners to buttons
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].addEventListener('click', playGame);
+        }
+
+        function playGame(e) {
+            //setup player's selection
+            let playerSelection = e.target.innerText;
+            //setup a random number to select for computer
+            //selects a number between 0 and 1 (1 not-inclusive)
+            let computerSelection = Math.random();
+
+            //if computerSelection is less than .34, computer selects Rock
+            if (computerSelection < .34) {
+                computerSelection = 'Rock';
+            } else if (computerSelection <= .67) {
+                computerSelection = 'Paper';
+            } else {
+                computerSelection = 'Scissors';
+            }
+
+            //setup a function to compare winners and return result
+            let result = checkWinner(playerSelection, computerSelection);
+
+            //output scores to the DOM
+            if (result === 'Player') {
+                result += ' wins!';
+                //update score
+                winnerScores[0]++;
+            }
+
+            if (result === 'Computer') {
+                result += ' wins!';
+                winnerScores[1]++;
+            }
+
+            if (result === 'Draw') {
+                result += '. It\'s a tie!'
+            }
+
+            //output score into Score DIV
+            score.innerHTML = 'Player: [ ' + winnerScores[0] + ' ] Computer: [ ' + winnerScores[1] + ' ]';
+
+            //output player and computer's selections
+            messenger('Player: <strong>' + playerSelection + '</strong> Computer: <strong>' + computerSelection + '</strong><br>' + result);
+        }
+
+        function messenger(selectionMessage) {
+            message.innerHTML = selectionMessage;
+        }
+
+        function checkWinner(player, computer) {
+            if (player === computer) {
+                return 'Draw';
+            }
+
+            if (player === 'Rock') {
+                if (computer === 'Paper') {
+                    return 'Computer';
+                } else {
+                    return 'Player';
+                }
+            }
+
+            if (player === 'Paper') {
+                if (computer === 'Scissors') {
+                    return 'Computer';
+                } else {
+                    return 'Player';
+                }
+            }
+
+            if (player === 'Scissors') {
+                if (computer === 'Rock') {
+                    return 'Computer';
+                } else {
+                    return 'Player';
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
